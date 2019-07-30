@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">TDD Example</string>
+    <string name="user_name">Usuario</string>
+    <string name="password">Contraseña</string>
+    <string name="login">Login</string>
+    <string name="error_user_password">Usuario y/o contraseña incorrecto</string>
+    <string name="error_max_login_attempt">Supero el maximo de intentos fallidos</string>
+    <string name="login_ok">Bien papu, estas adentro</string>
 </resources>

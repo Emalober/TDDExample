@@ -3,7 +3,7 @@ package com.ar.maloba.tddexample
 /**
  * Created by Ezequiel Maloberti on 30/7/2019.
  */
-class LoginPresenter {
+class LoginPresenter(private val loginView: LoginView) {
 
     companion object {
         const val MAX_LOGGIN_ATTEMPT = 3
@@ -23,14 +23,20 @@ class LoginPresenter {
     }
 
     fun checkUserPassword(user: String, password: String): Boolean {
-        if(isLogginAttemptExceeded()) return false
+
+        if(isLogginAttemptExceeded()){
+            loginView.showErrorMessageForMaxLoginAttempt()
+            return false
+        }
 
         if(USER === user && PASSWORD === password)
-            return true
+            loginView.showLoginSuccessMessage()
         else {
+            loginView.showErrorMessageForUserPassword()
             newLogginAttempt()
             return false
         }
+        return true
     }
 
 }
