@@ -6,8 +6,14 @@ import android.support.design.widget.Snackbar
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.content.Intent
+import android.util.Log
+
 
 class LoginActivity : AppCompatActivity() , LoginView{
+
+    private val LOG_TAG_UI: String = "LoginActivity"
+    private val USER_INPUTTEXT: String = "userText_input"
 
     private lateinit var loginPresenter: LoginPresenter
     private lateinit var txtUserName: EditText
@@ -19,6 +25,28 @@ class LoginActivity : AppCompatActivity() , LoginView{
         setContentView(R.layout.activity_login)
         initializePresenter()
         initializeViews()
+
+        if(savedInstanceState!=null) {
+            Log.d(LOG_TAG_UI, "Main activity onCreate savedInstanceState is not null.")
+            val user = savedInstanceState.getString(USER_INPUTTEXT)
+            txtUserName.setText(user)
+        } else {
+            Log.d(LOG_TAG_UI, "Main activity onCreate savedInstanceState is null.");
+        }
+    }
+
+    // This method will be invoked before onStop() method.
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val user = txtUserName.getText().toString()
+        outState.putString(USER_INPUTTEXT, user)
+        Log.d(LOG_TAG_UI, "Main activity onSaveInstanceState.")
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        val user = savedInstanceState.getString(USER_INPUTTEXT)
+        Log.d(LOG_TAG_UI, "Main activity onRestoreInstanceState.")
     }
 
     private fun initializePresenter() {
@@ -30,10 +58,14 @@ class LoginActivity : AppCompatActivity() , LoginView{
         txtPassword = findViewById(R.id.txt_password)
         btnLogin = findViewById(R.id.btn_login)
         btnLogin.setOnClickListener {
-            loginPresenter.checkUserPassword(
+            val isLogged = loginPresenter.checkUserPassword(
                 txtUserName.text.toString().trim(),
                 txtPassword.text.toString().trim()
             )
+            if(isLogged) {
+                val intent = Intent(this, AboutActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 

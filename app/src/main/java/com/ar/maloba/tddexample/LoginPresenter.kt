@@ -29,7 +29,7 @@ class LoginPresenter(private val loginView: LoginView) {
             return false
         }
 
-        if(USER === user && PASSWORD === password)
+        if(USER == user && PASSWORD == password)
             loginView.showLoginSuccessMessage()
         else {
             loginView.showErrorMessageForUserPassword()
